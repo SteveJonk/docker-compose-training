@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  node-api:
+    build:
+      context: './node-api'
+      args:
+        - PORT=3000
+    environment:
+      - NODE_ENV=test
+    ports:
+      - '8080:3000'
+  web:
+    build:
+      context: './my-next-app'
+    container_name: web-best
+    restart: always
+    volumes:
+      - ./my-next-app/:/app
+      - /my-next-app/app/node_modules
+      - /my-next-app/app/.next
+    ports:
+      - 3000:3000
+    depends_on:
+      - node-api
